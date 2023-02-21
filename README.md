@@ -32,7 +32,7 @@ All modules can be installed using pip.
 
 ## Training
 
-Training a plASgraph2 model requires (1) assembled graphs in GFA format for the training samples and (2) labllig of the training samples contigs as either *plasmid*, *chromosome*, *ambiguous* (contigs that appear in both a plasmid and the chromosome) or *unlabeled* (typically very short contigs).
+Training a plASgraph2 model requires (1) assembled graphs in Ggzipped FA format for the training samples and (2) labllig of the training samples contigs as either *plasmid*, *chromosome*, *ambiguous* (contigs that appear in both a plasmid and the chromosome) or *unlabeled* (typically very short contigs).
 
 The training input consists of two files:
 - a **configuration file** in <a href="https://yaml.org/">YAML</a> format, that specifies training parameters (default: `model/condig_default.yaml`);
@@ -40,12 +40,15 @@ The training input consists of two files:
 
 Files path in the CSV training file are assumed to be relative, with the prefix of the path for each file being provided as a command-line parameters. This assumption implies that all GFA and CSV training files are located in the same directory (although they can be located in subdirectories).
 
-**TODO: describe format of CSV contig labels file**
+For example, the first training sample is defined by the line `boostrom/abau-SAMEA12292436/short.gfa.gz,boostrom/abau-SAMEA12292436/short.gfa.csv,boostrom_abau-SAMEA12292436-u`:
+- the gzipped GFA assembly graph file is the file `short.gfa.gz` in the subdirectory `boostrom/abau-SAMEA12292436/` of the data directory;
+- the contig labels file is the file `short.gfa.gz` in the subdirectory `boostrom/abau-SAMEA12292436/` of the data directory; **TODO: describe format of CSV contig labels file**
+- the sample name is `boostrom_abau-SAMEA12292436-u`.
 
-Given a samples file `training_samples.csv` and a configuration file `training_config.yaml`, assuming that the directory containing data is `data_dir`, a plASgraph2 model can be trained by the command
+Given a samples file `training_samples.csv` and a configuration file `training_config.yaml`, assuming that the directory containing data is `training_data_dir`, a plASgraph2 model can be trained by the command
 
 ```
-python3 ./src/train.py training_config.yaml training_samples.csv data_dir output_model_dir > model_train.log 2> model_train.err
+python3 ./src/train.py training_config.yaml training_samples.csv training_data_dir output_model_dir > model_train.log 2> model_train.err
 ```
 
 The result is created in the directory `output_model_dir`, while files `model_train.log`, `model_train.err` record the log and possible errors that occured duing training.
