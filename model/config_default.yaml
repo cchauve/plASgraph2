@@ -1,0 +1,44 @@
+## plASgraph2 configuration file
+
+## Learning features
+features: coverage_norm,gc_norm,kmer_dot,degree,length_norm,loglength
+
+## Architecture parameters
+# Number of GNN layers
+n_gnn_layers: 6
+# Number of channels in GNN layers
+n_channels: 32
+# Number of channels out of preprocessing
+n_channels_preproc: 10
+# Tie GNN layers variables
+tie_gnn_layers: true
+
+## Activation functions
+# Preprocessing layer activation
+preproc_activation: sigmoid
+# Fully connected layers activation
+fully_connected_activation: relu
+# GCN layers activation
+gcn_activation: relu
+# Output layer activation (typically sigmoid, none for squaredhinge activation)
+output_activation: sigmoid
+
+## Miscellaneous parameters
+# GCN L2 regularization penalty
+l2_reg: 2.5e-4
+# Dropout rate
+dropout_rate: 0.1
+# Training loss function squaredhinge / crossentropy / mse
+loss_function: crossentropy
+# Random seed
+random_seed: 123
+# Plasmid and ambiguous contigs weight
+plasmid_ambiguous_weight: 1
+# Learning rate
+learning_rate: 0.005
+# The number of learning epochs
+epochs: 1000
+# The number of epochs when no improvement before early stopping happens
+early_stopping_patience: 100
+# Set threshold for plasmid and chromosome classification to optimize validation F1 score
+set_thresholds: true
