@@ -42,7 +42,7 @@ Files path in the CSV training file are assumed to be relative, with the prefix 
 
 For example, the first training sample is defined by the line `boostrom/abau-SAMEA12292436/short.gfa.gz,boostrom/abau-SAMEA12292436/short.gfa.csv,boostrom_abau-SAMEA12292436-u`:
 - the gzipped GFA assembly graph file is the file `short.gfa.gz` in the subdirectory `boostrom/abau-SAMEA12292436/` of the data directory;
-- the contig labels file is the file `short.gfa.gz` in the subdirectory `boostrom/abau-SAMEA12292436/` of the data directory; **TODO: describe format of CSV contig labels file**
+- the contig labels file is the file `short.gfa.csv` in the subdirectory `boostrom/abau-SAMEA12292436/` of the data directory; **TODO: describe format of CSV contig labels file**
 - the sample name is `boostrom_abau-SAMEA12292436-u`.
 
 Given a samples file `training_samples.csv` and a configuration file `training_config.yaml`, assuming that the directory containing data is `training_data_dir`, a plASgraph2 model can be trained by the command
