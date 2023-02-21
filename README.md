@@ -54,9 +54,6 @@ PlASgraph predicts each contig as either plasmidic, chromosomal or ambiguous. Th
 
 ### Example
 
-~~~
-python3 plASgraph.py -i example_data/c_freundii_assembly.gfa -o output.csv --draw_graph
-~~~
 
 ## Citation
 Janik Sielemann, Katharina Sielemann, Broňa Brejová, Tomas Vinar, Cedric Chauve; "plASgraph: Using Graph Neural Networks to Detect Plasmid Contigs from an Assembly Graph", in preparation, 2023.
