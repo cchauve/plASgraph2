@@ -1,0 +1,9 @@
+In create_graph.py, the threshold for deleting short nodes is
+hard-coded on line 199. This threshold should be a paramater.
+
+The visualization script does not work as it can not handle deleted
+short nodes that have no classification label: it woud be better if
+the classification ascript would output them as unlabelled.
+
+Generally, handling short contigs should be more robust.
+
