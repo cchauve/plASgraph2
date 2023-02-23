@@ -27,7 +27,7 @@ NODE_SIZE_SETTINGS = [(100, 20, 6), (1000, 40, 9),
                       (10000, 80, 12), (1e10, 160, 15)]
 # pairs label, node color
 NODE_COLOR_SETTINGS = [("chromosome", "C0"), ("plasmid", "C1"), 
-                        ("ambiguous", "black"), ("unknown", "gray")]
+                        ("ambiguous", "black"), ("unlabeled", "gray")]
 # how many interquartile ranges from median is start of outliers when coloring nodes
 # traditional value 1.5 seems to be too large
 IQR_COEFF = 1
@@ -101,10 +101,6 @@ def process_node_colors(graph, features_df, column_name, marker):
     return (node_colors, legend_colors)
 
 def draw_graph(graph, features_df, column_name, output_filename, sample_id):
-    # Based on
-    # https://github.com/cchauve/plASgraph/blob/main/draw_graphs.py
-
-    print(output_filename)
     fig, ax = plt.subplots(figsize=(15, 10))
 
     columns = column_name.split(":")

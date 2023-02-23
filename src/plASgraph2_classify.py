@@ -101,11 +101,12 @@ def test_one(file_prefix, graph_file, model, parameters, sample_id):
     list_of_lists_with_prediction = []
     for index, contig_id in enumerate(node_list):
         contig_short = G.nodes[contig_id]["contig"]
+        contig_len = G.nodes[contig_id]["length"]
         plasmid_probability = preds[index][0]
         chromosome_probability = preds[index][1]
         label = helpers.pair_to_label(list(np.around(preds[index])))
         list_of_lists_with_prediction.append(
-            [sample_id, contig_short, plasmid_probability, chromosome_probability, label]
+            [sample_id, contig_short, contig_len, plasmid_probability, chromosome_probability, label]
     )
 
     prediction_df = pd.DataFrame(
@@ -113,6 +114,7 @@ def test_one(file_prefix, graph_file, model, parameters, sample_id):
         columns=[
             "sample",
             "contig",
+            "length",
             "plasmid_score",
             "chrom_score",
             "label",
