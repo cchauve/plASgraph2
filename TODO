@@ -13,3 +13,4 @@ to the paper experiments?
 Avoiding to have to specify as a parameter the directory to access
 datas and requiring absolute path names fotr GFA files?
 
+Having all CSV files either with or without a header?
