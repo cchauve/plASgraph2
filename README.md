@@ -10,15 +10,16 @@ PlASgraph2 is built on a graph neural network (GNN) and analysis the **assembly 
   <img src="/doc/plASgraph2_architecture.png" alt="drawing" width="600"/>
 </p>
 
-This distribution of PlASgraph2 is provided with a model trained on data from the ESKAPEE group of bacterial pathogens (*Enterococcus faecium*, *Staphylococcus aureus*, *Klebsiella pneumoniae*, *Acinetobacter baumannii*, *Pseudomonas aeruginosa*, *Enterobacter spp.*, and *Escherichia coli*). PlASgraph2 is species-agnostic, so the provided trained model can be applied to analyse data from other pathogen species. Alternativly, plASgraph can be trained on a nw training dataset.
+This distribution of PlASgraph2 is provided with a model trained on data from the ESKAPEE group of bacterial pathogens (*Enterococcus faecium*, *Staphylococcus aureus*, *Klebsiella pneumoniae*, *Acinetobacter baumannii*, *Pseudomonas aeruginosa*, *Enterobacter spp.*, and *Escherichia coli*). PlASgraph2 is species-agnostic, so the provided trained model can be applied to analyse data from other pathogen species. Alternativly, plASgraph can be trained on a nw training dataset (see section **Training** below).
 
 ## Installation
+PlASgraph2 can be installed from this repository 
 
 ~~~
 git clone https://github.com/cchauve/plASgraph2.git
 ~~~
 
-PlASgraph2 is written in python 3 and requires the following python modules, and has been tested on the listed versions of these modules.
+PlASgraph2 is written in python 3 and has been developed and tested with the following modules.
   - Python 3.8.10
   - NetworkX  2.8.3
   - Pandas  1.4.1
@@ -30,7 +31,7 @@ PlASgraph2 is written in python 3 and requires the following python modules, and
   - TensorFlow  2.8.0
   - Spektral  1.1.0
   - PyYAML 6.0
-All modules can be installed using pip.
+All modules can be installed using pip (https://docs.python.org/3.8/installing/index.html) and we strongly recommand to run plASgraph2 using a dediated python virtual environment (see https://docs.python.org/3.8/library/venv.html).
     
 ## Training
 
