@@ -1,4 +1,4 @@
-# plASgraph - Classifying Plasmid Contigs From Bacterial Assembly Graphs Using Graph Neural Networks
+# plASgraph2 - Classifying Plasmid Contigs From Bacterial Assembly Graphs Using Graph Neural Networks
 
 ## Overview
 
@@ -102,7 +102,7 @@ python ../src/plASgraph2_classify.py set SAMN15148288_input.csv ./ ../model/ESKA
 
 **TO DO.** Describe options to the classificatio sript if any.
 
-**TO DO**. Uniformize the CSV formats to have all files with a header line and the same field names.
+**TO DO* Uniformize the CSV formats to have all files with a header line and the same field names.
 
 ## Citation
 Janik Sielemann, Katharina Sielemann, Broňa Brejová, Tomas Vinar, Cedric Chauve; "plASgraph: Using Graph Neural Networks to Detect Plasmid Contigs from an Assembly Graph", in preparation, 2023.
