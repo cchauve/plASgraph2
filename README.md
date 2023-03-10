@@ -10,7 +10,7 @@ PlASgraph2 is built on a graph neural network (GNN) and analysis the **assembly 
   <img src="/doc/plASgraph2_architecture.png" alt="drawing" width="600"/>
 </p>
 
-This distribution of PlASgraph2 is provided with a model trained on data from the ESKAPEE group of bacterial pathogens (*Enterococcus faecium*, *Staphylococcus aureus*, *Klebsiella pneumoniae*, *Acinetobacter baumannii*, *Pseudomonas aeruginosa*, *Enterobacter spp.*, and *Escherichia coli*). PlASgraph2 is species-agnostic, so the provided trained model can be applied to analyse data from other pathogen species. Alternativly, plASgraph can be trained on a nw training dataset (see section **Training** below).
+This distribution of PlASgraph2 is provided with a model trained on data from the ESKAPEE group of bacterial pathogens (*Enterococcus faecium*, *Staphylococcus aureus*, *Klebsiella pneumoniae*, *Acinetobacter baumannii*, *Pseudomonas aeruginosa*, *Enterobacter spp.*, and *Escherichia coli*). PlASgraph2 is species-agnostic, so the provided trained model can be applied to analyse data from other pathogen species. Alternativly, plASgraph can be trained on a new training dataset (see section **Training** below).
 
 ## Installation
 PlASgraph2 can be installed from this repository 
@@ -32,61 +32,62 @@ PlASgraph2 is written in python 3 and has been developed and tested with the fol
   - Spektral  1.1.0
   - PyYAML 6.0  
  
-All modules can be installed using pip (https://docs.python.org/3.8/installing/index.html) and we strongly recommand to run plASgraph2 using a dediated python virtual environment (see https://docs.python.org/3.8/library/venv.html).
+All modules can be installed using pip (https://docs.python.org/3.8/installing/index.html) and we strongly recommand to run plASgraph2 using a dedicated python virtual environment (see https://docs.python.org/3.8/library/venv.html).
     
 ## Training
 
 Training a plASgraph2 model requires (1) assembly graphs in gzipped GFA format for the training samples and (2) a labeling of the training samples contigs as either *plasmid*, *chromosome*, *ambiguous* (contigs that appear in both a plasmid and the chromosome) or *unlabeled* (typically very short contigs).
 
 The training input consists of two files:
-- a *configuration file* in <a href="https://yaml.org/">YAML</a> format, that specifies training parameters (default: `model/condig_default.yaml`);
-- a *CSV samples file* that contains one line per sample, specifying (1) the path to the gzipped GFA assembly file for the sample, (2) the path for a contig labels CSV file, nd (3) a sample name.
+- a *configuration file* in <a href="https://yaml.org/">YAML</a> format, that specifies training parameters (default file: `model/condig_default.yaml`);
+- a *CSV samples file*, with no header line, that contains one line per sample, specifying (1) the path to the gzipped GFA assembly file for the sample, (2) the path for a contig labels CSV file, and (3) a sample name (example: `example/ESKAPEE_train.csv`).
 
-Files path in the CSV training file are assumed to be relative, with the prefix of the path for each file being provided as a command-line parameters. This assumption implies that all GFA and CSV training files are located in the same directory (although they can be located in subdirectories).
+Files path in the CSV training file are assumed to be relative, with the prefix of the path for each file being provided as a command-line parameter (see example of command-line below). This assumption implies that all GFA and CSV training files are located in the same directory (although they can be located in different subdirectories).
 
-For example, the first training sample is defined by the line `boostrom/abau-SAMEA12292436/short.gfa.gz,boostrom/abau-SAMEA12292436/short.gfa.csv,boostrom_abau-SAMEA12292436-u`:
-- the gzipped GFA assembly graph file is the file `short.gfa.gz` in the subdirectory `boostrom/abau-SAMEA12292436/` of the data directory;
-- the contig labels file is the file `short.gfa.csv` in the subdirectory `boostrom/abau-SAMEA12292436/` of the data directory; **TODO: describe format of CSV contig labels file**
+For example, to re-train plASgraph2 with the training data in `example/ESKAPEE_train.csv` one would run the command
+```
+python ./src/plASgraph2_train.py training_config.yaml example/ESKAPEE_train.csv training_data_dir output_model_dir > model_train.log 2> model_train.err
+```
+
+The first training sample in `example/ESKAPEE_train.csv` is described by the line 
+```boostrom/abau-SAMEA12292436/short.gfa.gz,boostrom/abau-SAMEA12292436/short.gfa.csv,boostrom_abau-SAMEA12292436-u```
+where:
+- the gzipped GFA assembly graph file is the file `short.gfa.gz` in the subdirectory `boostrom/abau-SAMEA12292436/` of the data directory `training_data_dir`;
+- the contig labels file is the file `short.gfa.csv` in the subdirectory `boostrom/abau-SAMEA12292436/` of the data directory `training_data_dir`;
 - the sample name is `boostrom_abau-SAMEA12292436-u`.
 
-Given a samples file `training_samples.csv` and a configuration file `training_config.yaml`, assuming that the directory containing data is `training_data_dir`, a plASgraph2 model can be trained by the command
+**TO DO:** Describe the format of the contigs labels CSV file. Are all the fields (*contig,plasmid_score,chrom_score,label,length,chr_coverage,pl_coverage,un_coverage,hybrid_mapsto*) necessary? 
 
-```
-python3 ./src/plASgraph2_train.py training_config.yaml training_samples.csv training_data_dir output_model_dir
-```
-
-The result is created in the directory `output_model_dir`, while files `model_train.log`, `model_train.err` record the log and possible errors that occured duing training.
-
-The model is provided as a `.pb` file in the directory `output_model_dir`.
+The result is created in the directory `output_model_dir`, while files `model_train.log`, `model_train.err` record the log and possible errors that occured duing training. The model is provided in the file `output_model_dir/saved_model.pb`.
 
 Additional options `-g` and `-l` allow respectively to generate the GNN as a file in GML format and to generate additional log files.
 
 The directory `model/ESKAPEE_model/` contains the model trained on ESKAPEE pathogens, from data listed in the file `model/ESKAPEE_train.csv`, where each sample was assembled using Unicycler (files `*.short.gfa.gz`) and SKESA (files `*.skesa.gfa.gz`).
 
-**We should deposit the assemblies in a repository (zenodo, gitLFS?).**
+**TO DO.** We should deposit the assemblies in a repository (zenodo, gitLFS?).
 
-**Are-there other technical details we should mention (GPU?)?**
+**QUESTION.** Are-there other technical details we should mention (GPU?)?
 
 ## Classification
 
-The input for plASgraph consists in a trained model and either a single assembly graph from a single bacterial isolate in <a href="http://gfa-spec.github.io/GFA-spec/">GFA (.gfa) format</a> or a CSV file with a list of GFA files to analyze.
+The input for plASgraph2 consists in a trained model and either a single assembly graph from a single bacterial sample in gzipped <a href="http://gfa-spec.github.io/GFA-spec/">GFA (.gfa) format</a> or a CSV file with a list of gzipped GFA files to analyze.
 
-PlASgraph has been trained and tested on assembly graphs generated by the assemblers <a href="https://github.com/rrwick/Unicycler">Unicycler</a> and <a href="https://github.com/ncbi/SKESA">SKESA</a>.
+PlASgraph2 has been trained and tested on assembly graphs generated by the assemblers <a href="https://github.com/rrwick/Unicycler">Unicycler</a> and <a href="https://github.com/ncbi/SKESA">SKESA</a>.
 
-Given a single gzipped GFA file `assembly_graph.gfa.gz`, located in directory `data_dir` and a model located in directory `model_dir`, its contigs can be classified using the command
-
-```
-python3 ./src/plASgraph2_classify.py gfa assembly_graph.gfa.gz data_dir model_dir output.csv
-```
-
-The result is written in a file `output.csv` that contains one line
-per contig, recording its length, plasmid scor, chromosome score and
-final label.
-
-To classify contigs of several samples at once, the input file is a CSV file `input.csv`, with one line per sample, the first field being the name of the gzippeed assembly graph file, the second is not used, and the last field is the name of the sample. All assembly graphs files in the file are assumed to be located in the same directory `data_dir`. The samples can then be classified using the command
+Given a single gzipped GFA file `assembly_graph.gfa.gz`, located in directory `data_dir` and a model located in directory `model_dir`, the contigs of the sample can be classified using the command
 
 ```
-python3 ./src/plASgraph2_classify.py set input.csv data_dir model_dir output.csv
+python ./src/plASgraph2_classify.py gfa assembly_graph.gfa.gz data_dir model_dir output.csv
+```
+
+The result is written in a file `output.csv` that contains one line per contig, recording its length, plasmid score, chromosome score and final label.
+
+To classify contigs of several samples at once, the input file is a CSV file `input.csv`, with one line per sample, the first field being the name of the gzippeed assembly graph file, the second is currently not used, and the last field is the name of the sample. 
+All assembly graphs files listed in the file are assumed to be located in the same directory `data_dir`. 
+The samples contigs can then be classified using the command
+
+```
+python ./src/plASgraph2_classify.py set input.csv data_dir model_dir output.csv
 ```
 
 As in the previous case, `output.csv` is a CSV file containing the results for all contigs of all samples.
@@ -94,9 +95,14 @@ As in the previous case, `output.csv` is a CSV file containing the results for a
 The directory `example` contains an example that has been generated by the command
 
 ```
-python3 ../src/plASgraph2_classify.py set SAMN15148288_input.csv ./ ../model/ESKAPEE_model/ SAMN15148288_output.csv
+python ../src/plASgraph2_classify.py set SAMN15148288_input.csv ./ ../model/ESKAPEE_model/ SAMN15148288_output.csv
 ```
 
+**TO DO.** Describe the format of the output CSV file.
+
+**TO DO.** Describe options to the classificatio sript if any.
+
+**TO DO**. Uniformize the CSV formats to have all files with a header line and the same field names.
 
 ## Citation
 Janik Sielemann, Katharina Sielemann, Broňa Brejová, Tomas Vinar, Cedric Chauve; "plASgraph: Using Graph Neural Networks to Detect Plasmid Contigs from an Assembly Graph", in preparation, 2023.
