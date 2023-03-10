@@ -30,7 +30,8 @@ PlASgraph2 is written in python 3 and has been developed and tested with the fol
   - Matplotlib  3.5.1
   - TensorFlow  2.8.0
   - Spektral  1.1.0
-  - PyYAML 6.0
+  - PyYAML 6.0  
+ 
 All modules can be installed using pip (https://docs.python.org/3.8/installing/index.html) and we strongly recommand to run plASgraph2 using a dediated python virtual environment (see https://docs.python.org/3.8/library/venv.html).
     
 ## Training
