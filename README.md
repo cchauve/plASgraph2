@@ -59,7 +59,7 @@ The result is created in the directory `../ESKAPEE_model`, while files `../ESKAP
 
 Additional options `-g` and `-l` allow respectively to generate the GNN as a file in GML format and to generate additional log files.
 
-**QUESTION.** Are-there other technical details we should mention (GPU?)?
+**QUESTION.** Are-there other technical details we should mention (GPU, GFA format?)?
 
 ## Classification
 
