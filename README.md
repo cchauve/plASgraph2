@@ -39,8 +39,9 @@ All modules can be installed using pip (https://docs.python.org/3.8/installing/i
 Training a plASgraph2 model requires (1) assembly graphs in gzipped GFA format for the training samples and (2) a labeling of the training samples contigs as either *plasmid*, *chromosome*, *ambiguous* (contigs that appear in both a plasmid and the chromosome) or *unlabeled* (typically very short contigs).
 
 The training input consists of two files:
-- a *configuration file* in <a href="https://yaml.org/">YAML</a> format, that specifies training parameters (default file: `model/condig_default.yaml`);
-- a *CSV samples file*, with no header line, that contains one line per sample, specifying (1) the path to the gzipped GFA assembly file for the sample, (2) the path for a contig labels CSV file, and (3) a sample name (example: `example/ESKAPEE_train.csv`).
+- a *configuration file* in <a href="https://yaml.org/">YAML</a> format, that specifies training parameters
+(default file: [model/condig_default.yaml](./model/condig_default.yaml));
+- a *CSV samples file*, with no header line, that contains one line per sample, specifying (1) the path to the gzipped GFA assembly file for the sample, (2) the path for a contig labels CSV file, and (3) a sample name (example: [example/eskapee-train.csv](./example/eskapee-train.csv), taken from the github repo that contains all training data used to train plASgraph2 models, [plasgraph2-datasets](https://github.com/fmfi-compbio/plasgraph2-datasets)).
 
 Files path in the CSV training file are assumed to be relative, with the prefix of the path for each file being provided as a command-line parameter (see example of command-line below). This assumption implies that all GFA and CSV training files are located in the same directory (although they can be located in different subdirectories).
 
