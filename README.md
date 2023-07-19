@@ -40,8 +40,8 @@ Training a plASgraph2 model requires (1) assembly graphs in gzipped GFA format f
 
 The training input consists of two files:
 - a *configuration file* in <a href="https://yaml.org/">YAML</a> format, that specifies training parameters
-(default file: [model/condig_default.yaml](./model/condig_default.yaml));
-- a *CSV samples file*, with no header line, that contains one line per sample, specifying (1) the path to the gzipped GFA assembly file for the sample, (2) the path for a contig labels CSV file, and (3) a sample name (example: [example/eskapee-train.csv](./example/eskapee-train.csv), taken from the github repo that contains all training data used to train plASgraph2 models, [plasgraph2-datasets](https://github.com/fmfi-compbio/plasgraph2-datasets)).
+(default file: [model/config_default.yaml](./model/config_default.yaml));
+- a *CSV samples file*, with no header line, that contains one line per sample, specifying (1) the path to the gzipped GFA assembly file for the sample, (2) the path for a contig labels CSV file, and (3) a sample name (example: [model/eskapee-train.csv](./model/eskapee-train.csv), taken from the github repo that contains all training data used to train plASgraph2 models, [plasgraph2-datasets](https://github.com/fmfi-compbio/plasgraph2-datasets)).
 
 Files path in the CSV training file are assumed to be relative, with the prefix of the path for each file being provided as a command-line parameter (see example of command-line below). This assumption implies that all GFA and CSV training files are located in the same directory (although they can be located in different subdirectories).
 
