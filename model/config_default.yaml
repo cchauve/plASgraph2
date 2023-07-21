@@ -42,3 +42,5 @@ epochs: 1000
 early_stopping_patience: 100
 # Set threshold for plasmid and chromosome classification to optimize validation F1 score
 set_thresholds: true
+# Contigs shorter than this are deleted from the graph before prediction
+minimum_contig_length: 100
