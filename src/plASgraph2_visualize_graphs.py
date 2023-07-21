@@ -62,7 +62,7 @@ def main(file_list, file_prefix, summary_file, selected_columns, output_dir):
         graph_file = row['graph']
         sample_id = row['sample_id']
         graph = create_graph.read_single_graph(
-            file_prefix, graph_file, sample_id, delete_short=False)
+            file_prefix, graph_file, sample_id, minimum_contig_length=0)
         for column in columns:
             column_filename = column.replace(":", "_")
             output_filename = os.path.join(
@@ -72,10 +72,10 @@ def main(file_list, file_prefix, summary_file, selected_columns, output_dir):
 
 def norm_value_range(x):
     x = np.array(x)
-    q1, median, q3 = np.quantile(x, [0.25, 0.50, 0.75])
+    q1, median, q3 = np.nanquantile(x, [0.25, 0.50, 0.75])
     iqr = q3 - q1
-    low = max(x.min(), median - IQR_COEFF * iqr)
-    high = min(x.max(), median + IQR_COEFF * iqr)
+    low = max(np.nanmin(x), median - IQR_COEFF * iqr)
+    high = min(np.nanmax(x), median + IQR_COEFF * iqr)
     if low == high:
         high = low + 1
     return (low, high)
@@ -87,10 +87,20 @@ def norm_values(x):
     xnorm = (x - low) / (high - low)
     return np.clip(xnorm, 0, 1)
 
-
+def get_nodes_values(graph, features_df, column_name, default):
+    result = []
+    for node_id in graph:
+        if node_id in features_df.index:
+            node_value = features_df.loc[node_id, column_name]
+        else:
+            # short nodes may be not present in summary file
+            node_value = default
+        result.append(node_value)
+    return result
+    
 def process_node_colors(graph, features_df, column_name, marker):
-    feature_values = [features_df.loc[node_id, column_name] for node_id in graph]
-    if column_name.endswith('_label'):
+    feature_values = get_nodes_values(graph, features_df, column_name, np.nan)
+    if column_name.endswith('label'):
         node_colors = [get_label_color(x) for x in feature_values]
         legend_colors = get_label_legend(marker)
     else:
@@ -101,21 +111,21 @@ def process_node_colors(graph, features_df, column_name, marker):
     return (node_colors, legend_colors)
 
 def draw_graph(graph, features_df, column_name, output_filename, sample_id):
-    fig, ax = plt.subplots(figsize=(15, 10))
+    #fig, ax = plt.subplots(figsize=(15, 10))
 
     columns = column_name.split(":")
     assert len(columns) == 1 or len(columns) == 2
 
     # compute node sizes based on sequence length
-    node_sizes = []
-    for node_id in graph:
-        seq_length = features_df.loc[node_id, 'length']
-        node_sizes.append(get_node_size(seq_length))
+    node_sizes = [get_node_size(graph.nodes[contig_id]["length"]) for contig_id in graph]
         
     # for one or two selected table columns, compute colors and legend items
     node_colors = []
     legend_colors = []
-    markers = ["s", "o"]
+    if len(columns) == 1:
+        markers = ["o"]
+    else:
+        markers = ["s", "o"]
     for (idx, column) in enumerate(columns):
         (node_colors_curr, legend_colors_curr) = process_node_colors(graph, features_df, column, markers[idx])
         node_colors.append(node_colors_curr)
@@ -132,7 +142,7 @@ def draw_graph(graph, features_df, column_name, output_filename, sample_id):
     # draw circle nodes
     nx.draw(graph, pos=pos, node_size=node_sizes,
             node_color=node_colors[-1], alpha=0.8, width=0.2)
-    
+
     legend1 = plt.legend(
         handles=get_size_legend(),
         loc="upper left",
@@ -144,19 +154,19 @@ def draw_graph(graph, features_df, column_name, output_filename, sample_id):
     legend2 = plt.legend(
         handles=legend_colors[0],
         loc="upper left",
-        bbox_to_anchor=(1, 0.71),
+        bbox_to_anchor=(1, 0.64),
         title=columns[0],
     )
-    plt.gca().add_artist(legend2)
-
+    
+    
     if(len(legend_colors) == 2):
+        plt.gca().add_artist(legend2)
         legend3 = plt.legend(
-           handles=legend_colors[1],
+            handles=legend_colors[1],
             loc="upper left",
-            bbox_to_anchor=(1, 0.51),
+            bbox_to_anchor=(1, 0.35),
             title=columns[1],
         )
-        plt.gca().add_artist(legend3)   
 
     plt.title(f"Sample {sample_id}, {column_name}")
     plt.savefig(output_filename, dpi=500, format="png", bbox_inches="tight")
@@ -221,7 +231,7 @@ def get_label_color(node_label):
     for (label, color) in NODE_COLOR_SETTINGS:
         if node_label == label:
             return color
-    return get_label_color('unknown')
+    return get_label_color('unlabeled')
 
 
 def get_node_size(seq_length):

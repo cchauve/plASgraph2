@@ -24,7 +24,8 @@ PARAMS = [
     {'name': 'early_stopping_patience', 'type': int, 'default': 100},
     {'name': 'set_thresholds', 'type': bool, 'default': False},
     {'name': 'plasmid_threshold', 'type': float, 'default': 0.5},
-    {'name': 'chromosome_threshold', 'type': float, 'default': 0.5}
+    {'name': 'chromosome_threshold', 'type': float, 'default': 0.5},
+    {'name': 'minimum_contig_length', 'type': int, 'default': 100}
 ]
 
 

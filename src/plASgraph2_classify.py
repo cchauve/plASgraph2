@@ -88,7 +88,7 @@ def main_gfa(
 
 def test_one(file_prefix, graph_file, model, parameters, sample_id):
     
-    G = create_graph.read_single_graph(file_prefix, graph_file, sample_id)
+    G = create_graph.read_single_graph(file_prefix, graph_file, sample_id, parameters['minimum_contig_length'])
     node_list = list(G)  # fix order of nodes
 
     the_graph = create_graph.Networkx_to_Spektral(G, node_list, parameters)
