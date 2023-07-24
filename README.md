@@ -19,21 +19,16 @@ PlASgraph2 can be installed from this repository
 git clone https://github.com/cchauve/plASgraph2.git
 ~~~
 
-PlASgraph2 is written in python 3 and has been developed and tested with the following modules.
-  - Python 3.8.10
-  - NetworkX  2.8.3
-  - Pandas  1.4.1
-  - NumPy  1.22.2
-  - Scikit-learn  1.0.2
-  - Scipy 1.8.0
-  - Biopython  1.79
-  - Matplotlib  3.5.1
-  - TensorFlow  2.8.0
-  - Spektral  1.1.0
-  - PyYAML 6.0  
- 
+PlASgraph2 is written in Python 3. It has been developed and tested with Python 3.8.10 and the modules listed in the `requirements.txt` file. 
 All modules can be installed using pip (https://docs.python.org/3.8/installing/index.html) and we strongly recommand to run plASgraph2 using a dedicated python virtual environment (see https://docs.python.org/3.8/library/venv.html).
-    
+
+The enironment can be created e.g. using the commands below:
+```bash
+python3 -m venv venv
+source venv/bin/activate
+pip3 install -r plASgraph2/requirements.txt
+```
+
 ## Training
 
 Training a plASgraph2 model requires (1) assembly graphs in gzipped GFA format for the training samples and (2) a labeling of the training samples contigs as either *plasmid*, *chromosome*, *ambiguous* (contigs that appear in both a plasmid and the chromosome) or *unlabeled* (typically very short contigs).
