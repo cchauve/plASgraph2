@@ -63,10 +63,15 @@ The input for plASgraph2 consists in a trained model and either a single assembl
 Given a single gzipped GFA file `assembly_graph.gfa.gz`, located in directory `data_dir` and a model located in directory `model_dir`, the contigs of the sample can be classified using the command
 
 ```
-python ./src/plASgraph2_classify.py gfa assembly_graph.gfa.gz data_dir model_dir output.csv
+python ./src/plASgraph2_classify.py gfa assembly_graph.gfa.gz model_dir output.csv
 ```
 
 The result is written in a file `output.csv` that contains one line per contig, recording its length, plasmid score, chromosome score and final label.
+
+For example, you can run plASgraph2 on one of the GFA files provided in the directory `example`:
+```bash
+python ../src/plASgraph2_classify.py gfa SAMN15148288_SKESA.gfa.gz ../model/ESKAPEE_model/ SAMN15148288_SKESA_output.csv
+```
 
 To classify contigs of several samples at once, the input file is a CSV file `input.csv`, with one line per sample, the first field being the name of the gzippeed assembly graph file, the second is currently not used, and the last field is the name of the sample. 
 All assembly graphs files listed in the file are assumed to be located in the same directory `data_dir`. 
