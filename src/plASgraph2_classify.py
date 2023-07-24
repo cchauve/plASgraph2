@@ -147,3 +147,6 @@ if __name__ == "__main__":
         main_set(**arg_dict)
     elif args.command == 'gfa':
         main_gfa(**arg_dict)
+    else:
+        parser.print_usage()
+                
