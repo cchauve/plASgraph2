@@ -57,8 +57,8 @@ class Networkx_to_Spektral(Dataset):
 
 
 def KL(a, b):
-    a = np.asarray(a, dtype=np.float)
-    b = np.asarray(b, dtype=np.float)
+    a = np.asarray(a, dtype=float)
+    b = np.asarray(b, dtype=float)
     return np.sum(np.where(a != 0, a * np.log(a / b), 0))
 
 def weighted_median(values, weights):
@@ -99,8 +99,9 @@ def get_node_coverage(gfa_arguments, seq_length):
             return (float(match.group(1)) / seq_length, False)
     raise AssertionError("depth not found")
 
-def read_graph(graph_file, csv_file, sample_id, graph, delete_short=True):
-    """Read a single graph from gfa of gfa.gz, compute attributes, add its nodes and edges to nx graph. Label csv file can be set to None"""
+def read_graph(graph_file, csv_file, sample_id, graph, minimum_contig_length):
+    """Read a single graph from gfa of gfa.gz, compute attributes, add its nodes and edges to nx graph. 
+    Label csv file can be set to None. Contigs shorter than minimum_contig_length are contracted."""
 
     # first pass: read all nodes
     current_nodes = []
@@ -195,15 +196,15 @@ def read_graph(graph_file, csv_file, sample_id, graph, delete_short=True):
         graph.nodes[node_id]["plasmid_label"] = pair[0]
         graph.nodes[node_id]["chrom_label"] = pair[1]
 
-    if delete_short:
-        delete_short_contigs(graph, current_nodes, 100)
+    if minimum_contig_length > 0:
+        delete_short_contigs(graph, current_nodes, minimum_contig_length)
     
-def delete_short_contigs(graph, node_list, min_len):
+def delete_short_contigs(graph, node_list, minimum_contig_length):
     """check length attribute of all contigs in node_list 
-    and if some are shorter than min_len,
+    and if some are shorter than minimum_contig_length,
     remove them from the graph and connect new neighbors"""
     for node_id in node_list:
-        if graph.nodes[node_id]["length"] < min_len:
+        if graph.nodes[node_id]["length"] < minimum_contig_length:
             neighbors = list(graph.neighbors(node_id))
             all_new_edges = list(itertools.combinations(neighbors, 2))
             for edge in all_new_edges:
@@ -211,17 +212,17 @@ def delete_short_contigs(graph, node_list, min_len):
             graph.remove_node(node_id)
 
 
-def read_single_graph(file_prefix, gfa_file, sample_id, delete_short=True):
+def read_single_graph(file_prefix, gfa_file, sample_id, minimum_contig_length):
     """Read single graph without node labels for testing"""
     graph = nx.Graph()
     graph_file = file_prefix + gfa_file
-    read_graph(graph_file, None, sample_id, graph, delete_short=delete_short)
+    read_graph(graph_file, None, sample_id, graph, minimum_contig_length)
     return graph
 
-def read_graph_set(file_prefix, file_list, read_labels=True, delete_short=True):
+def read_graph_set(file_prefix, file_list, minimum_contig_length, read_labels=True):
     """Read several graph files to a single graph. 
     Node labels will be read from the csv file for each graph if read_labels is True. 
-    Short nodes will be deleted form the graph if delete_short is True
+    Nodes shorter than minimum_contig_length will be deleted from the graph.
     """
 
     # read data frame with files
@@ -235,6 +236,6 @@ def read_graph_set(file_prefix, file_list, read_labels=True, delete_short=True):
             csv_file = file_prefix + row['csv']
         else:
             csv_file = None
-        read_graph(graph_file, csv_file, row['sample_id'], graph, delete_short=delete_short)
+        read_graph(graph_file, csv_file, row['sample_id'], graph, minimum_contig_length)
 
     return graph

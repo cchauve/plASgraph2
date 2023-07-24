@@ -43,14 +43,15 @@ def main(config_file : 'YAML configuration file',
       id of the sample (string without colons, commas, whitespace, unique within the set)   
     """
     
-    G = create_graph.read_graph_set(file_prefix, train_file_list)
+    # Creating a dictionary parameters of parameter values from YAML file
+    parameters = config.config(config_file)
+
+    # read GFA and CSV files in the training set
+    G = create_graph.read_graph_set(file_prefix, train_file_list, parameters['minimum_contig_length'])
     node_list = list(G)  # fix node order
     
     if gml_file is not None:
         nx.write_gml(G, path=gml_file)
-
-    # Creating a dictionary parameters of parameter values from YAML file
-    parameters = config.config(config_file)
 
     # generate spektral graph
     all_graphs = create_graph.Networkx_to_Spektral(G, node_list, parameters)

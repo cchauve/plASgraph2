@@ -1,0 +1,11 @@
+protobuf==3.19.4
+NetworkX == 2.8.3
+Pandas == 1.4.1
+NumPy == 1.22.2
+Scikit-learn == 1.0.2
+Scipy == 1.8.0
+Biopython == 1.79
+Matplotlib == 3.5.1
+TensorFlow == 2.8.0
+Spektral == 1.1.0
+PyYAML == 6.0
