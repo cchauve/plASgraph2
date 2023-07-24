@@ -132,7 +132,6 @@ def main_gfa(
     features_df = read_data_csv(data_csv, default_sample='.')
     # check that in this case all samples have the same id
     samples = features_df["sample"].unique()
-    print(samples, "len:", len(samples))
     if len(samples) > 1:
         raise KeyError(f"column named 'sample' contains multiple different sample IDs in {data_csv}, only one allowed in gfa mode") 
     sample_id = samples[0]
