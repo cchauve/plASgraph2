@@ -132,4 +132,5 @@ python ../src/plASgraph2_visualize_graphs.py set SAMN15148288_input.csv ./ SAMN1
 More information can be obtained by running `python ./src/plASgraph2_classify.py -h` and `python ../src/plASgraph2_classify.py set -h`.
 
 ## Citation
-Janik Sielemann, Katharina Sielemann, Broňa Brejová, Tomas Vinar, Cedric Chauve; "plASgraph2: Using Graph Neural Networks to Detect Plasmid Contigs from an Assembly Graph", submitted, 2023.
+Janik Sielemann, Katharina Sielemann, Broňa Brejová, Tomas Vinar, Cedric Chauve; "plASgraph2: Using Graph Neural Networks to Detect Plasmid Contigs from an Assembly Graph", 
+<a href="https://www.frontiersin.org/articles/10.3389/fmicb.2023.1267695">Frontiers Microbiology, in press</a>, 2023.
